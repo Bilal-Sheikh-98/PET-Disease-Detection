@@ -1,222 +1,640 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>PetGuard AI | Disease Detection</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>PetGuard AI | Pet Disease Detection</title>
 
-<style>
-body {
-    background: linear-gradient(120deg, #e3f2fd, #fce4ec);
-    font-family: "Segoe UI", sans-serif;
-}
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-/* ===== LAYOUT ===== */
-.wrapper {
-    display: flex;
-    min-height: 100vh;
-}
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
-/* ===== SIDEBAR ===== */
-.sidebar {
-    width: 260px;
-    background: #1e293b;
-    color: #fff;
-    padding: 25px;
-}
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-.sidebar h3 {
-    margin-bottom: 30px;
-}
-
-.sidebar a {
-    display: block;
-    color: #cbd5e1;
-    padding: 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    margin-bottom: 10px;
-}
-
-.sidebar a:hover {
-    background: #334155;
-    color: #fff;
-}
-
-/* ===== MAIN ===== */
-.main {
-    flex: 1;
-    padding: 30px;
-}
-
-/* ===== CARDS ===== */
-.card {
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.badge-med {
-    background: #0d6efd;
-    padding: 6px 12px;
-    border-radius: 20px;
-}
-
-.map-box {
-    height: 360px;
-    border-radius: 15px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-}
-
-.preview-img {
-    width: 100%;
-    max-height: 240px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-bottom: 10px;
-}
-
-.loader {
-    display: none;
-    width: 40px;
-    height: 40px;
-    border: 4px solid #ddd;
-    border-top: 4px solid #0d6efd;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: auto;
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
-}
-</style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<div class="wrapper">
+<!-- ================= NAVBAR ================= -->
 
-    <!-- ===== SIDEBAR ===== -->
-    <div class="sidebar">
-        <h3>🐾 PetGuard AI</h3>
-        <a href="#"><i class="fa fa-stethoscope"></i> Disease Detection</a>
-        <a href="#"><i class="fa fa-hospital"></i> Nearby Clinics</a>
-        <a href="#"><i class="fa fa-map"></i> Map View</a>
-        <a href="#"><i class="fa fa-info-circle"></i> About System</a>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="#">
+
+            <i class="fa-solid fa-paw me-2"></i>
+
+            PetGuard AI
+
+        </a>
+
+        <button class="navbar-toggler"
+
+            data-bs-toggle="collapse"
+
+            data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+
+                    <a class="nav-link active" href="#home">Home</a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#upload">Detection</a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#clinic">Clinics</a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#about">About</a>
+
+                </li>
+
+               
+
+            </ul>
+
+        </div>
+
     </div>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <div class="main">
+</nav>
 
-        <h2 class="mb-4">Pet Disease Screening Dashboard</h2>
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+<div class="container">
+
+<div class="row align-items-center">
+
+<div class="col-lg-6">
+
+<span class="hero-badge">
+
+AI Powered Healthcare
+
+</span>
+
+<h1>
+
+Pet Disease Detection
+
+using Deep Learning
+
+</h1>
+
+<p>
+
+Upload an image of your Cat or Dog.
+
+Our AI model detects possible diseases instantly
+
+and provides care recommendations along with
+
+nearby veterinary clinics.
+
+</p>
+
+<div class="mt-4">
+
+<a href="#upload"
+
+class="btn btn-primary btn-lg me-3">
+
+<i class="fa-solid fa-cloud-arrow-up"></i>
+
+Start Detection
+
+</a>
+
+<a href="#about"
+
+class="btn btn-outline-light btn-lg">
+
+Learn More
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+    <div class="hero-images">
+
+        <div class="circle dog-circle">
+            <img src="images/dog.jpg" alt="Dog">
+        </div>
+
+        <div class="circle cat-circle">
+            <img src="images\cat2.jpg" alt="Cat">
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= UPLOAD ================= -->
+
+<section class="upload-section"
+
+id="upload">
+
+<div class="container">
+
+<div class="text-center mb-5">
+
+<h2>
+
+Disease Detection
+
+</h2>
+
+<p>
+
+Upload a clear image of your pet.
+
+Supported formats:
+
+JPG PNG JPEG WEBP
+
+</p>
+
+</div>
+
+<div class="row justify-content-center">
+
+<div class="col-lg-7">
+
+<div class="upload-card">
+
+<div class="upload-icon">
+
+<i class="fa-solid fa-cloud-arrow-up"></i>
+
+</div>
+
+<h3>
+
+Drag & Drop
+
+Your Image
+
+</h3>
+
+<p>
+
+or click below to browse
+
+</p>
+
+<input
+
+type="file"
+
+id="imageInput"
+
+accept="image/*"
+
+class="form-control"
+
+onchange="previewImage()">
+
+<img
+
+id="preview"
+
+class="preview-image d-none">
+
+<button
+
+class="btn btn-success btn-lg w-100 mt-4"
+
+onclick="predict()">
+
+<i class="fa-solid fa-microscope"></i>
+
+Analyze Image
+
+</button>
+
+<div
+
+id="loader"
+
+class="loader mt-4 d-none">
+
+<div class="spinner-border text-primary">
+
+</div>
+
+<p class="mt-3">
+
+AI is analyzing your pet...
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= RESULT SECTION ================= -->
+
+<section class="result-section py-5" id="result">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2>AI Prediction Result</h2>
+            <p>Your pet diagnosis will appear below after AI analysis.</p>
+        </div>
 
         <div class="row g-4">
 
-            <!-- LEFT -->
-            <div class="col-md-5">
-                <div class="card p-4">
-                    <h5 class="mb-3">Pet Image Input</h5>
+            <!-- Animal -->
+            <div class="col-lg-3 col-md-6">
 
-                    <input type="file" class="form-control mb-2" id="imageInput" accept="image/*" onchange="previewImage()">
-                    <img id="preview" class="preview-img d-none">
+                <div class="result-card">
 
-                    <button class="btn btn-primary w-100 mb-2" onclick="predict()">
-                        <i class="fa fa-microscope"></i> Analyze Image
-                    </button>
+                    <i class="fa-solid fa-dog result-icon"></i>
 
-                    <div class="loader" id="loader"></div>
+                    <h5>Animal</h5>
 
-                    <hr>
+                    <h3 id="animal">-</h3>
 
-                    <h6 class="text-muted">Diagnosis Result</h6>
+                    <small>Detected Pet</small>
 
-                    <p><b>Animal:</b> <span class="badge badge-med" id="animal">-</span></p>
-                    <p><b>Detected Problem:</b> <span id="problem">-</span></p>
-                    <p><b>Confidence:</b> <span id="confidence">-</span>%</p>
-
-                    <div class="alert alert-info mt-3">
-                        <b>Advice:</b>
-                        <div id="advice">-</div>
-                    </div>
                 </div>
+
             </div>
 
-            <!-- RIGHT -->
-            <div class="col-md-7">
-                <div class="card p-4 mb-4">
-                    <div class="d-flex justify-content-between">
-                        <h5>Nearby Veterinary Clinics</h5>
-                        <button class="btn btn-success btn-sm" onclick="findClinics()">
-                            <i class="fa fa-location-dot"></i> Locate
-                        </button>
-                    </div>
+            <!-- Disease -->
 
-                    <div id="clinics" class="mt-3"></div>
+            <div class="col-lg-3 col-md-6">
+
+                <div class="result-card">
+
+                    <i class="fa-solid fa-virus result-icon"></i>
+
+                    <h5>Disease</h5>
+
+                    <h3 id="problem">-</h3>
+
+                    <small>Prediction</small>
+
                 </div>
 
-                <div class="card p-3">
-                    <h5>Map View</h5>
-                    <div class="map-box">
-                        <iframe id="mapFrame" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+
+            <!-- Confidence -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="result-card">
+
+                    <i class="fa-solid fa-chart-line result-icon"></i>
+
+                    <h5>Confidence</h5>
+
+                    <h3>
+
+                        <span id="confidence">0</span>%
+
+                    </h3>
+
+                    <div class="progress mt-3">
+
+                        <div
+
+                            id="confidenceBar"
+
+                            class="progress-bar"
+
+                            style="width:0%">
+
+                        </div>
+
                     </div>
+
                 </div>
+
+            </div>
+
+            <!-- Advice -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="result-card">
+
+                    <i class="fa-solid fa-notes-medical result-icon"></i>
+
+                    <h5>Recommendation</h5>
+
+                    <p id="advice">
+
+                        AI recommendation will appear here.
+
+                    </p>
+
+                </div>
+
             </div>
 
         </div>
+
     </div>
+
+</section>
+
+
+<!-- ================= CLINICS ================= -->
+
+<section class="py-5 bg-light" id="clinic">
+
+<div class="container">
+
+<div class="text-center mb-5">
+
+<h2>
+
+Nearby Veterinary Clinics
+
+</h2>
+
+<p>
+
+Using your current location
+
+</p>
+
+<button
+
+class="btn btn-success"
+
+onclick="findClinics()">
+
+<i class="fa-solid fa-location-dot"></i>
+
+Locate Me
+
+</button>
+
 </div>
 
-<script>
-function previewImage() {
-    const file = imageInput.files[0];
-    if (!file) return;
-    preview.src = URL.createObjectURL(file);
-    preview.classList.remove("d-none");
-}
+<div class="row">
 
-function predict() {
-    if (!imageInput.files[0]) return alert("Select image first");
+<div class="col-lg-5">
 
-    loader.style.display = "block";
+<div
 
-    const fd = new FormData();
-    fd.append("image", imageInput.files[0]);
+id="clinics"
 
-    fetch("http://127.0.0.1:5000/predict", { method: "POST", body: fd })
-    .then(r => r.json())
-    .then(d => {
-        animal.innerText = d.animal;
-        problem.innerText = d.problem;
-        confidence.innerText = d.problem_confidence;
-        advice.innerText = d.advice;
-    })
-    .finally(() => loader.style.display = "none");
-}
+class="clinic-list">
 
-function findClinics() {
-    navigator.geolocation.getCurrentPosition(pos => {
-        fetch(`http://127.0.0.1:5000/nearby-clinics?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
-        .then(r => r.json())
-        .then(d => {
-            clinics.innerHTML = "";
-            d.clinics.forEach(c => {
-                clinics.innerHTML += `
-                    <div class="border-bottom py-2">
-                        <b>${c.name}</b><br>
-                        📏 ${c.distance_km} km |
-                        <a href="${c.map_link}" target="_blank">Map</a>
-                    </div>
-                `;
-            });
-            if (d.clinics.length)
-                mapFrame.src = `https://maps.google.com/maps?q=${d.clinics[0].map_link.split("=")[1]}&z=14&output=embed`;
-        });
-    });
-}
-</script>
+</div>
+
+</div>
+
+<div class="col-lg-7">
+
+<div class="map-container">
+
+<iframe
+
+id="mapFrame"
+
+width="100%"
+
+height="450"
+
+style="border:0; border-radius:20px"
+
+loading="lazy">
+
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section
+
+class="py-5"
+
+id="about">
+
+<div class="container">
+
+<div class="text-center mb-5">
+
+<h2>
+
+Why PetGuard AI?
+
+</h2>
+
+</div>
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<i class="fa-solid fa-brain fa-3x text-primary mb-3"></i>
+
+<h5>
+
+AI Powered
+
+</h5>
+
+<p>
+
+Uses Deep Learning for prediction.
+
+</p>
+
+</div>
+
+<div class="col-md-3">
+
+<i class="fa-solid fa-bolt fa-3x text-warning mb-3"></i>
+
+<h5>
+
+Instant Detection
+
+</h5>
+
+<p>
+
+Fast prediction within seconds.
+
+</p>
+
+</div>
+
+<div class="col-md-3">
+
+<i class="fa-solid fa-hospital fa-3x text-success mb-3"></i>
+
+<h5>
+
+Nearby Clinics
+
+</h5>
+
+<p>
+
+Find nearest veterinary hospitals.
+
+</p>
+
+</div>
+
+<div class="col-md-3">
+
+<i class="fa-solid fa-shield-heart fa-3x text-danger mb-3"></i>
+
+<h5>
+
+Pet Care
+
+</h5>
+
+<p>
+
+Health advice after prediction.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-6">
+
+<h3>
+
+PetGuard AI
+
+</h3>
+
+<p>
+
+AI Powered Pet Disease Detection System
+
+using TensorFlow,
+
+Flask and Deep Learning.
+
+</p>
+
+</div>
+
+<div class="col-lg-6 text-lg-end">
+
+<p>
+
+Developed By
+
+</p>
+
+<h5>
+
+DHA SUFFA UNIVERSITY
+
+</h5>
+
+<p>
+
+Final Year Project • 2026
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</footer>
+
+
+
+<!-- Bootstrap JS -->
+
+
+<!-- Custom JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
 
 </body>
+
 </html>
