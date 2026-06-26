@@ -1,0 +1,17 @@
+# Virtual Environment
+venv/
+backend/venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Datasets
+backend/dataset/
+backend/dataset_split/
+backend/dataset_animal/
+backend/dataset_animal_split/
+
+# Uploads
+backend/uploads/
+
