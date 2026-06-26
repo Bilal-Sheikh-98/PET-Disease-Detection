@@ -97,7 +97,7 @@ pip install -r requirements.txt
 
 
 Run backend:
-
+venv\Scripts\activate
 python app.py
 
 Backend will run at:
@@ -125,7 +125,11 @@ http://localhost:8000/
 
 
 ---
-
+ Code Push Git Command
+ git status
+ git add . 
+ git commit -m "Describe your changes"
+ git push
 ## 🔍 Features
 
 - Animal Detection (Cat / Dog)
