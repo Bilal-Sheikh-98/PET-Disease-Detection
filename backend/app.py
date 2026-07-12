@@ -8,6 +8,10 @@ import os
 import requests
 import math
 from requests.exceptions import RequestException
+from tensorflow.keras.applications.efficientnet import EfficientNetB0
+from tensorflow.keras.applications.efficientnet import preprocess_input
+from tensorflow.keras.applications.efficientnet import decode_predictions
+
 app = Flask(__name__)
 CORS(app)
 
@@ -17,7 +21,7 @@ CORS(app)
 # ===============================
 UPLOAD_FOLDER = "uploads"
 IMG_SIZE = 224
-CONFIDENCE_THRESHOLD = 0.55
+CONFIDENCE_THRESHOLD = 0.50
 ANIMAL_CONFIDENCE_THRESHOLD = 0.7
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -26,14 +30,158 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # LOAD MODELS
 # ===============================
 
-animal_model = tf.keras.models.load_model("models/animal_model.h5", compile=False)
+# animal_model = tf.keras.models.load_model("models/animal_model.h5", compile=False)
+animal_model = EfficientNetB0(weights="imagenet")
 dog_disease_model = tf.keras.models.load_model("models/dog_disease_model.h5", compile=False)
 cat_disease_model = tf.keras.models.load_model("models/cat_disease_model.h5", compile=False)
 
 # ===============================
 # CLASS NAMES
 # ===============================
-ANIMAL_CLASSES = ["cat", "dog"]
+
+# ANIMAL_CLASSES = ["cat", "dog"]
+
+DOG_CLASSES = {
+
+    "golden_retriever",
+    "labrador_retriever",
+    "german_shepherd",
+    "beagle",
+    "boxer",
+    "pug",
+    "doberman",
+    "rottweiler",
+    "husky",
+    "malamute",
+    "chihuahua",
+    "great_dane",
+    "saint_bernard",
+    "border_collie",
+    "bull_mastiff",
+    "cocker_spaniel",
+    "english_setter",
+    "french_bulldog",
+    "basset",
+    "bloodhound",
+    "briard",
+    "bull_terrier",
+    "collie",
+    "dalmatian",
+    "dingo",
+    "eskimo_dog",
+    "newfoundland",
+    "papillon",
+    "pomeranian",
+    "samoyed",
+    "schipperke",
+    "shih_tzu",
+    "toy_poodle",
+    "standard_poodle",
+    "miniature_poodle",
+    "vizsla",
+    "weimaraner",
+    "whippet",
+    "yorkshire_terrier",
+    "kuvasz",
+    "borzoi",
+    "bedlington_terrier",
+    "affenpinscher",
+"afghan_hound",
+"airedale",
+"akita",
+"basenji",
+"basset",
+"beagle",
+"bedlington_terrier",
+"bernese_mountain_dog",
+"black-and-tan_coonhound",
+"bloodhound",
+"bluetick",
+"border_collie",
+"border_terrier",
+"borzoi",
+"boston_bull",
+"boxer",
+"briard",
+"bull_mastiff",
+"bull_terrier",
+"bulldog",
+"cairn",
+"cardigan",
+"chesapeake_bay_retriever",
+"chihuahua",
+"chow",
+"clumber",
+"cocker_spaniel",
+"collie",
+"curly-coated_retriever",
+"dalmatian",
+"dhole",
+"dingo",
+"doberman",
+"english_foxhound",
+"english_setter",
+"english_springer",
+"eskimo_dog",
+"flat-coated_retriever",
+"french_bulldog",
+"german_shepherd",
+"golden_retriever",
+"great_dane",
+"great_pyrenees",
+"groenendael",
+"ibizan_hound",
+"irish_setter",
+"irish_terrier",
+"irish_water_spaniel",
+"irish_wolfhound",
+"keeshond",
+"kelpie",
+"komondor",
+"kuvasz",
+"labrador_retriever",
+"leonberg",
+"malamute",
+"miniature_pinscher",
+"newfoundland",
+"norfolk_terrier",
+"norwegian_elkhound",
+"papillon",
+"pekinese",
+"pembroke",
+"pomeranian",
+"pug",
+"redbone",
+"rottweiler",
+"saint_bernard",
+"samoyed",
+"schipperke",
+"scotch_terrier",
+"scottish_deerhound",
+"sealyham_terrier",
+"shetland_sheepdog",
+"shih_tzu",
+"siberian_husky",
+"staffordshire_bullterrier",
+"standard_poodle",
+"toy_poodle",
+"miniature_poodle",
+"vizsla",
+"weimaraner",
+"whippet",
+"wire-haired_fox_terrier",
+
+}
+
+CAT_CLASSES = {
+
+    "tabby",
+    "tiger_cat",
+    "persian_cat",
+    "siamese_cat",
+    "egyptian_cat",
+
+}
 
 DOG_DISEASE_CLASSES = [
     "ear_problem",
@@ -71,13 +219,39 @@ CAT_ADVICE = {
 # ===============================
 # IMAGE PREPROCESS
 # ===============================
-def preprocess_image(image_path):
+# def preprocess_image(image_path):
+#     img = cv2.imread(image_path)
+#     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+#     img = img / 255.0
+#     img = np.expand_dims(img, axis=0)
+#     return img
+
+
+def preprocess_animal_image(image_path):
+
     img = cv2.imread(image_path)
-    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    img = img / 255.0
-    img = np.expand_dims(img, axis=0)
+
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    img = cv2.resize(img, (224,224))
+
+    img = np.expand_dims(img.astype(np.float32), axis=0)
+
+    img = preprocess_input(img)
+
     return img
 
+def preprocess_disease_image(image_path):
+
+    img = cv2.imread(image_path)
+
+    img = cv2.resize(img, (224,224))
+
+    img = img.astype(np.float32) / 255.0
+
+    img = np.expand_dims(img, axis=0)
+
+    return img
 
 # DISTANCE CALCULATION
 # ===============================
@@ -119,21 +293,40 @@ def predict():
 
         image.save(image_path)
 
-        img = preprocess_image(image_path)
 
-        # ===============================
+      # ===============================
         # PHASE 1 : ANIMAL DETECTION
         # ===============================
 
-        animal_pred = animal_model.predict(img, verbose=0)
+        animal_img = preprocess_animal_image(image_path)
 
-        animal_index = np.argmax(animal_pred)
+        preds = animal_model.predict(animal_img, verbose=0)
 
-        animal = ANIMAL_CLASSES[animal_index]
+        decoded = decode_predictions(preds, top=5)[0]
 
-        animal_conf = float(animal_pred[0][animal_index])
+        print("\n========== IMAGENET ==========")
+        print(decoded)
+        print("==============================")
 
-        if animal_conf < ANIMAL_CONFIDENCE_THRESHOLD:
+        animal = "unknown"
+        animal_conf = 0
+
+        for _, class_name, confidence in decoded:
+
+            class_name = class_name.lower()
+
+
+            if class_name in DOG_CLASSES:
+                animal = "dog"
+                animal_conf = float(confidence)
+                break
+
+            elif class_name in CAT_CLASSES:
+                animal = "cat"
+                animal_conf = float(confidence)
+                break
+
+        if animal == "unknown" or animal_conf <  0.10:
 
             response = {
 
@@ -167,6 +360,9 @@ def predict():
         # ===============================
         # PHASE 2 : DISEASE DETECTION
         # ===============================
+
+        img = preprocess_disease_image(image_path)
+
 
         if animal == "dog":
 
